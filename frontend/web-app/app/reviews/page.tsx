@@ -1,9 +1,9 @@
 "use client";
 import Navbar from "@/app/components/Navbar";
 // import { useEffect } from "react";
-import { Star, AlertTriangle, CheckCircle, Home, ShoppingBag, Users, Settings } from "lucide-react";
 import { getAllReviews } from "@/lib/api/contractApi";
 import { useDynamicContext } from "@dynamic-labs/sdk-react-core";
+import { AlertTriangle, CheckCircle, Star } from "lucide-react";
 import { useEffect, useState } from "react";
 
 export default function DisplayReviews() {

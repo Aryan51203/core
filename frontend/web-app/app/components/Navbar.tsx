@@ -1,5 +1,3 @@
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
 import DynamicAuth from "./DynamicAuth";
 
 export default function Navbar() {

@@ -9,10 +9,6 @@ import CategoryTags from "./CategoryTags";
 import axios from "axios";
 import { useDynamicContext } from "@dynamic-labs/sdk-react-core";
 
-interface AddServiceProps {
-  onSubmit?: (data: ServiceData) => void;
-}
-
 const JWT =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySW5mb3JtYXRpb24iOnsiaWQiOiI4OWZjYWFlYi0wMGM1LTQyOWMtYjYwMC04ZDU0YzIwM2ExYTgiLCJlbWFpbCI6ImRpdnlhbnNoamFpbi4yMjA2QGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJwaW5fcG9saWN5Ijp7InJlZ2lvbnMiOlt7ImRlc2lyZWRSZXBsaWNhdGlvbkNvdW50IjoxLCJpZCI6IkZSQTEifSx7ImRlc2lyZWRSZXBsaWNhdGlvbkNvdW50IjoxLCJpZCI6Ik5ZQzEifV0sInZlcnNpb24iOjF9LCJtZmFfZW5hYmxlZCI6ZmFsc2UsInN0YXR1cyI6IkFDVElWRSJ9LCJhdXRoZW50aWNhdGlvblR5cGUiOiJzY29wZWRLZXkiLCJzY29wZWRLZXlLZXkiOiJjNTY0MDZiYzFjZDlkYmZlNTcxYSIsInNjb3BlZEtleVNlY3JldCI6IjQ3YmIxNTRkN2E3MjNkYWYzNTQ0NGNjZWE2ZTRmNjBlMDQ2Y2Y0MmI3MmE0MWYzN2M4Y2VhMDlmMWQzMzQ0M2QiLCJleHAiOjE3NTgwOTEyNDl9.2i2tP8DJf_tYHwsM5wyBy3L46yZAp9PTTEMFMh8ofDM";
 
@@ -23,7 +19,7 @@ interface ServiceData {
   categories: string[];
 }
 
-function AddService({setDialogOpen}) {
+function AddService({ setDialogOpen, setServices }) {
   const { primaryWallet } = useDynamicContext();
   const walletAddress = primaryWallet?.address;
 
@@ -60,26 +56,26 @@ function AddService({setDialogOpen}) {
     }
   }
 
-  async function pinJsonToIPFS() {
-    try {
-      const jsonString = JSON.stringify(serviceData, null, 2); // Converts JSON object to string
-      const file = new File([jsonString], "data.json", { type: "application/json" }); // Creates a File object
-      const data = new FormData();
-      data.append("file", file);
+  // async function pinJsonToIPFS() {
+  //   try {
+  //     const jsonString = JSON.stringify(serviceData, null, 2); // Converts JSON object to string
+  //     const file = new File([jsonString], "data.json", { type: "application/json" }); // Creates a File object
+  //     const data = new FormData();
+  //     data.append("file", file);
 
-      const request = await fetch("https://api.pinata.cloud/pinning/pinFileToIPFS", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${JWT}`,
-        },
-        body: data,
-      });
-      const response = await request.json();
-      return response;
-    } catch (error) {
-      return error;
-    }
-  }
+  //     const request = await fetch("https://api.pinata.cloud/pinning/pinFileToIPFS", {
+  //       method: "POST",
+  //       headers: {
+  //         Authorization: `Bearer ${JWT}`,
+  //       },
+  //       body: data,
+  //     });
+  //     const response = await request.json();
+  //     return response;
+  //   } catch (error) {
+  //     return error;
+  //   }
+  // }
 
   async function handleSubmit(e: React.FormEvent) {
     try {
@@ -91,6 +87,8 @@ function AddService({setDialogOpen}) {
 
       const res = await axios.post(`/api/company/service?walletId=${walletAddress}`, serviceData);
       console.log(res);
+
+      setServices((old) => [...old, { serviceName: serviceData.name, serviceLink: serviceData.phoneNumber }]);
 
       setDialogOpen(false);
     } catch (error) {

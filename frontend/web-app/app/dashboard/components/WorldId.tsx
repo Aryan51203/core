@@ -13,7 +13,7 @@ export default function WorldIdPopup({ setVerify }) {
     throw new Error("action is not set in environment variables!");
   }
 
-  const onSuccess = (result: ISuccessResult) => {
+  const onSuccess = () => {
     setVerify(true);
   };
 

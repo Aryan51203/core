@@ -6,7 +6,6 @@ import { Bell, MessageSquare, Search } from "lucide-react";
 import Link from "next/link";
 
 import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { testContract1, testContract2 } from "@/lib/api/contractApi";
 import { useIDKit } from "@worldcoin/idkit";
 import { useEffect, useState } from "react";
 import AutocompleteField from "../components/AutocompleteField";
@@ -16,19 +15,57 @@ import WorldIdPopup from "./components/WorldId";
 export default function Dashboard() {
   const [verify, setVerify] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
-  useEffect(() => {
-    async function callContract() {
-      const result1 = await testContract1();
-      const result2 = await testContract2();
+  const [services, setServices] = useState([
+    {
+      serviceName: "AWS",
+      serviceLink: "9311502794",
+      serviceKeywords: [Array],
+      _id: "66eef85c43d358bffb8fc0f9",
+    },
+    {
+      serviceName: "Llama",
+      serviceLink: "123456789",
+      serviceKeywords: [Array],
+      _id: "66ef1a640f5a8febb24eac35",
+    },
+    {
+      serviceName: "Kapa",
+      serviceLink: "4139244134",
+      serviceKeywords: [Array],
+      _id: "66ef1b440f5a8febb24eac3a",
+    },
+  ]);
 
-      console.log("result1", result1);
-      console.log("result2", result2);
-    }
+  // useEffect(() => {
+  //   async function callContract() {
+  //     const result1 = await testContract1();
+  //     const result2 = await testContract2();
 
-    callContract();
-  }, []);
+  //     console.log("result1", result1);
+  //     console.log("result2", result2);
+  //   }
+
+  //   callContract();
+  // }, []);
 
   const { open, setOpen } = useIDKit();
+
+  // useEffect(() => {
+  //   async function getAllServices() {
+  //     try {
+  //       console.log(walletId);
+  //       const result = await axios.get(`/api/company/service?walletId=${walletId}`);
+  //       console.log(result.data);
+
+  //       setServices(result.data);
+  //       console.log("YOOOOO", result.data);
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   }
+
+  //   getAllServices();
+  // }, []);
 
   useEffect(() => {
     if (verify) {
@@ -63,7 +100,7 @@ export default function Dashboard() {
 
             <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
               <DialogContent>
-                <AddService setDialogOpen={setDialogOpen} />
+                <AddService setDialogOpen={setDialogOpen} setServices={setServices} />
               </DialogContent>
             </Dialog>
           </div>
@@ -77,45 +114,28 @@ export default function Dashboard() {
             <CardContent>
               <table className="w-full">
                 <tbody>
-                  {[{ name: "{product name} customer service", status: "Completed", date: "Jul 12th 2024" }].map(
-                    (item, index) => (
-                      <tr key={index} className="border-b last:border-b-0">
-                        <td className="py-2">
-                          <div className="flex items-center">
-                            <div className="w-8 h-8 bg-gray-200 rounded mr-2"></div>
-                            <div>
-                              <p className="font-medium">{item.name}</p>
-                              <p className="text-xs text-gray-500">{item.date}</p>
-                            </div>
+                  {services?.map((item, index) => (
+                    <tr key={index} className="border-b last:border-b-0">
+                      <td className="py-2">
+                        <div className="flex items-center">
+                          <div className="w-8 h-8 bg-gray-200 rounded mr-2"></div>
+                          <div>
+                            <p className="font-medium">{item.serviceName}</p>
+                            <p className="text-xs text-gray-500">{item.serviceLink}</p>
                           </div>
-                        </td>
-                        <td className="text-right">
-                          <Link href={"dashboard/123"}>
-                            <Button variant="outline" size="sm" className="bg-[#0A3622] text-white">
-                              view
-                            </Button>
-                          </Link>
-                        </td>
-                      </tr>
-                    )
-                  )}
+                        </div>
+                      </td>
+                      <td className="text-right">
+                        <Link href={"dashboard/123"}>
+                          <Button variant="outline" size="sm" className="bg-[#0A3622] text-white">
+                            view
+                          </Button>
+                        </Link>
+                      </td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
-            </CardContent>
-          </Card>
-          <Card className="col-span-3 row-span-2 bg-[#0A3622] text-[#e3e3d0]">
-            <CardHeader>
-              <CardTitle>Kuch statistical</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="mt-4 text-center">
-                <p className="text-5xl font-bold">565K</p>
-                <p className="text-sm text-gray-500">Total Count</p>
-              </div>
-              {/* <p className="mt-4 text-sm ">Here are some tips on how to improve your score.</p> */}
-              <Button className="w-full mt-4 bg-[#e3e3d0] text-[#0A3622]" variant="outline">
-                View Statisctics
-              </Button>
             </CardContent>
           </Card>
         </div>
