@@ -13,7 +13,11 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "@/hooks/use-toast";
 import useWorldId from "@/hooks/use-world-id";
+
+import {uploadJsonToIPFS} from "../../../lib/api/IPFS.ts";
+import { AirDAO_ContractInstance, Oasis_ContractInstance } from "../../../lib/api/contractApi.ts";
 import { useDynamicContext } from "@dynamic-labs/sdk-react-core";
+import { AirDAOAddress, OasisAddress } from "@/lib/contract/contractAddress";
 
 const formSchema = z.object({
   serviceName: z.string().min(2, {
@@ -35,6 +39,10 @@ export default function ServiceReviewPage({ params }: any) {
 
   const { primaryWallet } = useDynamicContext();
   const userWalletAddr = primaryWallet?.address;
+  const companyWalletAddr = "0xF5125660D1143E87785Ae8d6Ea50b07821Ed9709";
+  // const serviceIds = ["0x66ef1b440f5a8febb24eac3a", "0x66ef1a640f5a8febb24eac35", "0x66eef85c43d358bffb8fc0f9"];
+  const index = Math.random()*3;
+  const servcieId = Math.floor(index);
 
   const { verificationStatus, handleSign } = useWorldId();
   const [isHuman, setIsHuman] = useState(true);
@@ -65,10 +73,41 @@ export default function ServiceReviewPage({ params }: any) {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     console.log("SUBMITTING REVIEW");
     setIsSubmitting(true);
     // Here you would typically send the data to your backend
+    const jsonMetaData = {
+      "user":userWalletAddr,
+      "company":companyWalletAddr,
+      "service":servcieId,
+    }
+    console.log("jsonMetaData: ",jsonMetaData);
+    
+    let jsonMetaDataHash = await uploadJsonToIPFS(jsonMetaData);
+    console.log("jsonMetaDataHash: ",jsonMetaDataHash);
+    if(jsonMetaDataHash == null){
+      jsonMetaDataHash = "bafkreibm6umt73msv5rpesmqqv6g2mt4ew2b2ufh2f6nxsumizpaepgbym";
+    }
+    try {
+      const result = await AirDAO_ContractInstance.methods.name().call();
+      console.log("result1", result);
+      
+        const gasEstimate = await AirDAO_ContractInstance.methods.mintToken(userWalletAddr, companyWalletAddr, servcieId, jsonMetaDataHash).estimateGas({ from: userWalletAddr });
+
+        const tx = await AirDAO_ContractInstance.methods.mintToken(userWalletAddr, companyWalletAddr, servcieId, jsonMetaDataHash).send({
+            from: userWalletAddr,
+            gas: gasEstimate,
+            gasPrice:1000000000
+        });
+        console.log('Transaction successful:', tx);
+
+    } catch (error) {
+      console.error("Error fetching services:", error);
+    }
+
+
+
     console.log(values);
     setTimeout(() => {
       setIsSubmitting(false);
@@ -168,18 +207,23 @@ export default function ServiceReviewPage({ params }: any) {
                   name="recommendationLevel"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Would you recommend this service?</FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <FormLabel>Do you think its a genuine service?</FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
                         <FormControl>
                           <SelectTrigger>
-                            <SelectValue placeholder="Select your recommendation level" />
+                            <SelectValue placeholder="Are you satisfied?" />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          <SelectItem value="highly">Highly Recommend</SelectItem>
-                          <SelectItem value="recommend">Recommend</SelectItem>
-                          <SelectItem value="neutral">Neutral</SelectItem>
-                          <SelectItem value="not_recommend">Do Not Recommend</SelectItem>
+                          <SelectItem value="1">
+                            Yes
+                          </SelectItem>
+                          <SelectItem value="0">
+                            No
+                          </SelectItem>
                         </SelectContent>
                       </Select>
                       <FormMessage />

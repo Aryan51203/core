@@ -6,6 +6,7 @@ import {
 } from "@dynamic-labs/sdk-react-core";
 import { EthereumWalletConnectors } from "@dynamic-labs/ethereum";
 import ReactQueryProvider from '@/lib/react-query/provider'
+import { ethers } from "ethers";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",

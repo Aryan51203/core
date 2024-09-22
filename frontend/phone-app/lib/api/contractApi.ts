@@ -22,6 +22,8 @@ const Oasis_ContractInstance = new Oasis_instance.eth.Contract(Oasis_ABI, OasisA
 //   }
 // }
 
+export { AirDAO_ContractInstance, Oasis_ContractInstance };
+
 export async function testContract1() {
   try {
     const result = await AirDAO_ContractInstance.methods.name().call();

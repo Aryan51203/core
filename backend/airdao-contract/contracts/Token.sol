@@ -30,7 +30,7 @@ contract Token is ERC721URIStorage, Ownable {
     }
 
     // Function to mint a new token, only storing metadata URI
-    function mintToken(address _user, address _companyId, uint _serviceId, string memory _metadataURI) external onlyOwner {
+    function mintToken(address _user, address _companyId, uint _serviceId, string memory _metadataURI) external {
         uint256 secret = _generateSecret(_user, _companyId, _serviceId);
         require(!_SBTissued[secret], "SBT can be issued only once to a user and service combination1");
         require(_addressToRole[_user] != COMPANY, "User can't act as a company!");

@@ -25,14 +25,18 @@
     "browser-or-node": "^3.0.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "ethers": "^6.13.2",
     "lucide-react": "^0.445.0",
     "next": "14.2.13",
+    "pinata-web3": "^0.4.1",
+    "pino-pretty": "^11.2.2",
     "react": "^18",
     "react-dom": "^18",
     "react-hook-form": "^7.53.0",
     "tailwind-merge": "^2.5.2",
     "tailwindcss-animate": "^1.0.7",
     "viem": "^2.21.10",
+    "web3": "^4.13.0",
     "zod": "^3.23.8"
   },
   "devDependencies": {
