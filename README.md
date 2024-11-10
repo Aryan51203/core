@@ -1,6 +1,6 @@
 # Introduction
 
-The project aims to create an app to easily & verifiably generate user reviews & ratings which are non editable and  can be used for trustable judgement of the service provided.  We aim to to serve consumers everywhere by providing trustable reviews which allow for fair judgement and Scam Prevention.
+The project aims to create an app to easily & verifiably generate user reviews & ratings which are non editable and  can be used for trustable judgement of the service provided.  We aim to to serve consumers everywhere by providing trustable reviews which allow for fair judgement and scam prevention.
 
 We have made two facets to the app. A web app for registering service providers and handling business side and a Mobile App to allow users to easily access available services and add reviews.The web-app contains the business side i.e. the companies aspect. The phone-app is for the users of the services.
 
