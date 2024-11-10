@@ -4,7 +4,7 @@ The project aims to create an app to easily & verifiably generate user reviews &
 
 We have made two facets to the app. A web app for registering service providers and handling business side and a Mobile App to allow users to easily access available services and add reviews.The web-app contains the business side i.e. the companies aspect. The phone-app is for the users of the services.
 
-The project uses WorldCoin's World ID anonymous actions to generate proof of human hood and create  Anonymous Unique Human reviews. Login and identity management is done via DYNAMIC. Then proof of interaction is generated with Zero Knowledge and reviews are stored on chain. We have also deployed on mobile for accessing more user base.
+The project uses WorldCoin's World ID anonymous actions to generate proof of human hood and create  Anonymous Unique Human reviews. Login and identity management is done via DYNAMIC. Then proof of interaction is generated with Zero Knowledge (ZK Proofs) and reviews are stored on chain. We have also deployed on mobile for accessing more user base.
 
 These feedbacks are used to create un-transferable Soul Based Tokens on AIRDAO to make the reviews tamper proof. We have created a new paradigm of co-ownership between the reviewer and the reviewee of SBTs to store and analyze reviews and perform reputation management. These are also further used for reward generation for both the parties.
 
